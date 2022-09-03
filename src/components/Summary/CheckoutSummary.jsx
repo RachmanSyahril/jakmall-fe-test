@@ -8,6 +8,7 @@ const Summary = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 1rem;
+  border-left: 1px solid ${colorPrimary};
 `;
 
 const SummaryTop = styled.div`

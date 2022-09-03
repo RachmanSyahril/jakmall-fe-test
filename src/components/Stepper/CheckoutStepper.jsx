@@ -1,7 +1,7 @@
 import React from "react";
-import { TxBold } from "../../assets/styles/typography";
-
 import styled from "styled-components";
+
+import { TxBold } from "../../assets/styles/typography";
 import {
   colorBG,
   colorBGVariant,
@@ -46,29 +46,29 @@ const Bullet = styled.a`
   font-size: 1.3rem;
 `;
 
-function CheckoutStepper() {
+function CheckoutStepper({ currentStep, changeStep }) {
   return (
     <Container>
-      <Point>
-        <Bullet checked>1</Bullet>
+      <Point onClick={() => changeStep(1)}>
+        <Bullet checked={currentStep >= 1}>1</Bullet>
         <TxBold>Delivery</TxBold>
       </Point>
 
       <TxBold>
-        <BsChevronRight style={{ verticalAlign: 'middle' }}/>
+        <BsChevronRight style={{ verticalAlign: "middle" }} />
       </TxBold>
 
-      <Point>
-        <Bullet>2</Bullet>
+      <Point onClick={() => changeStep(2)}>
+        <Bullet checked={currentStep >= 2} style={{ paddingLeft: "9%"}}>2</Bullet>
         <TxBold>Payment</TxBold>
       </Point>
 
       <TxBold>
-        <BsChevronRight style={{ verticalAlign: 'middle' }}/>
+        <BsChevronRight style={{ verticalAlign: "middle" }} />
       </TxBold>
 
-      <Point>
-        <Bullet>3</Bullet>
+      <Point onClick={() => changeStep(3)}>
+        <Bullet checked={currentStep >= 3}>3</Bullet>
         <TxBold>Finish</TxBold>
       </Point>
     </Container>

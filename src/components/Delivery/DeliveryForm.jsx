@@ -12,7 +12,6 @@ import {
 
 const Delivery = styled.div`
   background: white;
-  border-right: 1px solid ${colorPrimary};
 `;
 
 const DeliveryTitle = styled.div`
