@@ -2,13 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { GrCheckbox } from "react-icons/gr";
 
-import { colorPrimary } from "../../assets/styles/app-theme";
 import { TxTitle, BtnTxRegular } from "../../assets/styles/typography";
-import {
-  InputBlock,
-  InputAreaBlock,
-  GridContainer,
-} from "../../assets/styles/containers";
+import { GridContainer } from "../../assets/styles/containers";
+import { InputBlock, InputAreaBlock } from "../../assets/styles/input";
 
 const Delivery = styled.div`
   background: white;

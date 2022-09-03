@@ -9,6 +9,7 @@ const Summary = styled.div`
   flex-direction: column;
   padding: 0 1rem;
   border-left: 1px solid ${colorPrimary};
+  min-height: 538px;
 `;
 
 const SummaryTop = styled.div`

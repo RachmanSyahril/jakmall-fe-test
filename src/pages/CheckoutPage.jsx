@@ -8,7 +8,9 @@ import { Article, GridContainer } from "../assets/styles/containers";
 
 import CheckoutStepper from "../components/Stepper/CheckoutStepper";
 import CheckoutSummary from "../components/Summary/CheckoutSummary";
+import CheckoutFinish from "../components/Summary/CheckoutFinish";
 import DeliveryForm from "../components/Delivery/DeliveryForm";
+import PaymentForm from "../components/Payment/PaymentForm";
 
 const mapStateToProps = (state) => ({
   currentStep: state.stepReducer.currentStep,
@@ -22,12 +24,17 @@ class CheckoutPage extends Component {
   render() {
     const { currentStep, onChangeStep } = this.props;
 
+    const changeStepScheme = (step) => {
+      if (step == 1) alert("Back to cart");
+      else onChangeStep(step - 1);
+    };
+
     return (
       <Article padding="2rem">
         <CheckoutStepper currentStep={currentStep} changeStep={onChangeStep} />
 
         {currentStep < 3 ? (
-          <BtnTxRegular>
+          <BtnTxRegular onClick={() => changeStepScheme(currentStep)}>
             <AiOutlineArrowLeft style={{ verticalAlign: "middle" }} />
             &nbsp;&nbsp;
             {currentStep < 2 ? "Back to cart" : "Back to delivery"}
@@ -40,11 +47,11 @@ class CheckoutPage extends Component {
           {currentStep == 1 ? (
             <DeliveryForm />
           ) : currentStep == 2 ? (
-            <h1>Payment Form</h1>
+            <PaymentForm />
           ) : (
-            <h1>Finish Form</h1>
+            <CheckoutFinish />
           )}
-          
+
           <CheckoutSummary />
         </GridContainer>
       </Article>
