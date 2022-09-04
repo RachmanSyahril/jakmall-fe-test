@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentStep } from "../../redux/actions";
 
 import { TxBold } from "../../assets/styles/typography";
 import {
@@ -7,7 +9,6 @@ import {
   colorBGVariant,
   colorPrimary,
 } from "../../assets/styles/app-theme";
-
 import { BsChevronRight } from "react-icons/bs";
 
 const Container = styled.nav`
@@ -46,7 +47,14 @@ const Bullet = styled.a`
   font-size: 1.3rem;
 `;
 
-function CheckoutStepper({ currentStep, changeStep }) {
+function CheckoutStepper() {
+  const dispatch = useDispatch();
+  const currentStep = useSelector((state) => state.stepReducer.currentStep);
+
+  const changeStep = (step) => {
+    dispatch(setCurrentStep(step));
+  };
+
   return (
     <Container>
       <Point onClick={() => changeStep(1)}>
@@ -59,7 +67,9 @@ function CheckoutStepper({ currentStep, changeStep }) {
       </TxBold>
 
       <Point onClick={() => changeStep(2)}>
-        <Bullet checked={currentStep >= 2} style={{ paddingLeft: "9%"}}>2</Bullet>
+        <Bullet checked={currentStep >= 2} style={{ paddingLeft: "9%" }}>
+          2
+        </Bullet>
         <TxBold>Payment</TxBold>
       </Point>
 

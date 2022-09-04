@@ -10,12 +10,16 @@ import { Provider } from "react-redux";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
 
-import { stepReducer } from "./redux/reducers";
+import { stepReducer, shipmentReducer, paymentReducer } from "./redux/reducers";
 import App from "./App.jsx";
 import "./assets/App.css";
 
 const logger = createLogger();
-const rootReducers = combineReducers({ stepReducer });
+const rootReducers = combineReducers({
+  stepReducer,
+  shipmentReducer,
+  paymentReducer,
+});
 const store = createStore(
   rootReducers,
   applyMiddleware(thunkMiddleware, logger)

@@ -31,7 +31,7 @@ class CheckoutPage extends Component {
 
     return (
       <Article padding="2rem">
-        <CheckoutStepper currentStep={currentStep} changeStep={onChangeStep} />
+        <CheckoutStepper />
 
         {currentStep < 3 ? (
           <BtnTxRegular onClick={() => changeStepScheme(currentStep)}>

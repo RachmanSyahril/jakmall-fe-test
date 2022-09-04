@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { colorPrimary } from "../../assets/styles/app-theme";
-import { TxRegular, TxBold } from "../../assets/styles/typography";
+import { useDispatch, useSelector } from "react-redux";
+import { colorPrimary, colorAccent } from "../../assets/styles/app-theme";
+import { TxRegular, TxBold, TxSuccess } from "../../assets/styles/typography";
 
 const Summary = styled.div`
   background: white;
@@ -55,12 +56,49 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const Line = styled.hr`
+  width: 50%;
+  border-top: 1px solid ${colorAccent};
+  margin: 1rem 0px;
+`;
+
+const Methods = ({ title, value }) => {
+  return (
+    <div>
+      <Line />
+      <TxRegular>{title}</TxRegular>
+      <TxSuccess style={{ textAlign: "left", fontSize: "20px" }}>
+        {value}
+      </TxSuccess>
+    </div>
+  );
+};
+
 function CheckoutSummary() {
+  const currentStep = useSelector((state) => state.stepReducer.currentStep);
+  const shipment = useSelector((state) => state.shipmentReducer.shipment);
+  const payment = useSelector((state) => state.paymentReducer.payment);
+
   return (
     <Summary>
       <SummaryTop>
         <TxBold>Summary</TxBold>
         <TxRegular>10 items purchased</TxRegular>
+
+        {shipment.name ? (
+          <Methods
+            title="Delivery estimation"
+            value={`${shipment.estimate} by ${shipment.name}`}
+          />
+        ) : (
+          ""
+        )}
+
+        {payment.name ? (
+          <Methods title="Payment method" value={payment.name} />
+        ) : (
+          ""
+        )}
       </SummaryTop>
 
       <SummaryBottom>
@@ -76,7 +114,16 @@ function CheckoutSummary() {
           Total
           <strong style={{ float: "right" }}>505,900</strong>
         </TxTotal>
-        <Button>Continue to Payment</Button>
+        
+        {currentStep !== 3 && (
+          <Button>
+            {currentStep === 1
+              ? "Continue to Payment"
+              : payment.name
+              ? `Pay with ${payment.name}`
+              : "please select payment method"}
+          </Button>
+        )}
       </SummaryBottom>
     </Summary>
   );
