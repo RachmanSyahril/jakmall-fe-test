@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSendAsDropshipper } from "../../redux/actions";
 import { GrCheckbox, GrCheckboxSelected } from "react-icons/gr";
+import { BsCheckLg, BsXLg } from "react-icons/bs";
+import isEmail from "validator/es/lib/isEmail";
+import isMobilePhone from "validator/es/lib/isMobilePhone";
 
 import {
   TxTitle,
@@ -11,7 +14,8 @@ import {
   TxSuccess,
 } from "../../assets/styles/typography";
 import { GridContainer } from "../../assets/styles/containers";
-import { InputBlock, InputAreaBlock } from "../../assets/styles/input";
+import { InputAreaBlock } from "../../assets/styles/input";
+import { InputContainer, TextInput, Icon } from "../../assets/styles/forms";
 
 const Delivery = styled.div`
   background: white;
@@ -35,17 +39,57 @@ const BtnDropshipper = styled.div`
 `;
 
 function DeliveryForm() {
+  const {
+    reset,
+    register,
+    getValues,
+    formState: { errors, touchedFields },
+  } = useForm({
+    mode: "onBlur", // "onChange"
+  });
+
   const dispatch = useDispatch();
   const isDropshipper = useSelector(
     (state) => state.summaryReducer.isDropshipper
   );
 
   const toggleDropshipper = () => {
+    console.log(errors, touchedFields);
+    if (isDropshipper) {
+      console.log("reset");
+      reset(
+        { ...getValues(), dropshipper_name: "", dropshipper_phone: "" },
+        { keepErrors: true, keepTouched: true }
+      );
+    }
+
     dispatch(toggleSendAsDropshipper(!isDropshipper));
   };
 
-  const { register, handleSubmit, error } = useForm();
-  const onSubmit = (data) => console.log(data, error);
+  console.log(errors, touchedFields);
+
+  const InputBlock = ({ type, val, placeholder, formOpts = {}, disabled }) => {
+    return (
+      <InputContainer>
+        <TextInput
+          type={type}
+          valid={touchedFields[val]}
+          hasError={errors && errors[val]}
+          title={errors && errors[val] && errors[val].message}
+          placeholder={placeholder}
+          disabled={disabled}
+          {...register(val, formOpts)}
+        />
+        <Icon
+          valid={touchedFields[val]}
+          hasError={errors && errors[val]}
+          title={errors && errors[val] && errors[val].message}
+        >
+          {disabled ? "" : errors && errors[val] ? <BsXLg /> : <BsCheckLg />}
+        </Icon>
+      </InputContainer>
+    );
+  };
 
   return (
     <Delivery>
@@ -63,19 +107,27 @@ function DeliveryForm() {
       <GridContainer columnTemplate="55% 45%" gap="8px" padding="2rem 0">
         <div>
           <InputBlock
-            onChange={(e) => console.log("Adsfasdf")}
+            type="email"
+            val="email"
             placeholder="Email"
-            {...register("email", {
-              required: "Required",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "invalid email address",
+            formOpts={{
+              required: "is required",
+              validate: {
+                isEmail: (value) => isEmail(value) || "doesn't look like email",
               },
-            })}
+            }}
           />
           <InputBlock
+            type="number"
+            val="phone_number"
             placeholder="Phone Number"
-            {...register("phone_number")}
+            formOpts={{
+              required: "is required",
+              validate: {
+                isMobilePhone: (value) =>
+                  isMobilePhone(value) || "doesn't look like a phone number",
+              },
+            }}
           />
           <InputAreaBlock
             placeholder="Delivery Address"
@@ -84,12 +136,22 @@ function DeliveryForm() {
           />
         </div>
         <div>
-          <InputBlock placeholder="Dropshipper Name" />
-          <InputBlock placeholder="Dropshipper Phone number " />
+          <InputBlock
+            type="text"
+            val="dropshipper_name"
+            placeholder="Dropshipper Name"
+            disabled={!isDropshipper}
+            formOpts={isDropshipper ? { required: "is required" } : {}}
+          />
+          <InputBlock
+            type="number"
+            val="dropshipper_phone"
+            placeholder="Dropshipper Phone number"
+            disabled={!isDropshipper}
+            formOpts={isDropshipper ? { required: "is required" } : {}}
+          />
         </div>
       </GridContainer>
-
-      <BtnTxRegular onClick={handleSubmit(onSubmit)}>Simpan</BtnTxRegular>
     </Delivery>
   );
 }
