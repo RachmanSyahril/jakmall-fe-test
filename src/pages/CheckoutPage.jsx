@@ -25,7 +25,7 @@ class CheckoutPage extends Component {
     const { currentStep, onChangeStep } = this.props;
 
     const changeStepScheme = (step) => {
-      if (step == 1) alert("Back to cart");
+      if (step === 1) alert("Back to cart");
       else onChangeStep(step - 1);
     };
 

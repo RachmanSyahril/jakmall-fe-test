@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentStep } from "../../redux/actions";
 
-import { TxBold } from "../../assets/styles/typography";
 import {
   colorBG,
   colorBGVariant,
@@ -23,6 +22,14 @@ const Container = styled.nav`
   z-index: 2;
   transform: translateX(-50%);
   border-radius: 2rem;
+
+  @media (max-width: 768px) {
+    top: 50%;
+    right: -3%;
+    padding: 1.5rem;
+    flex-direction: column;
+    transform: translateX(377%);
+  }
 `;
 
 const Point = styled.span`
@@ -45,6 +52,27 @@ const Bullet = styled.a`
   display: -ms-flexbox;
   display: inline;
   font-size: 1.3rem;
+
+  @media (max-width: 768px) {
+    padding-top: 6%;
+    padding-left: 39%;
+  }
+`;
+
+const Bullet2 = styled(Bullet)`
+  padding-left: 9%;
+  @media (max-width: 768px) {
+    padding-top: 6%;
+    padding-left: 35%;
+  }
+`;
+
+export const TxBold = styled.h2`
+  font-weight: 600;
+  color: ${colorPrimary};
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 function CheckoutStepper() {
@@ -67,9 +95,7 @@ function CheckoutStepper() {
       </TxBold>
 
       <Point onClick={() => changeStep(2)}>
-        <Bullet checked={currentStep >= 2} style={{ paddingLeft: "9%" }}>
-          2
-        </Bullet>
+        <Bullet2 checked={currentStep >= 2}>2</Bullet2>
         <TxBold>Payment</TxBold>
       </Point>
 

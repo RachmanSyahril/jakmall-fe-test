@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { setCurrentStep } from "../../redux/actions";
+
 import {
   TxTitle,
   TxBold,
@@ -28,6 +31,13 @@ const makeid = (length) => {
 };
 
 function CheckoutFinish() {
+  const dispatch = useDispatch();
+  // const currentStep = useSelector((state) => state.stepReducer.currentStep);
+
+  const changeStep = (step) => {
+    dispatch(setCurrentStep(step));
+  };
+
   return (
     <Container>
       <TxTitle>Thank you</TxTitle>
@@ -37,7 +47,7 @@ function CheckoutFinish() {
       <TxRegular>Your order will be delivered today with </TxRegular>
 
       <div style={{ marginTop: "5rem" }}>
-        <BtnTxRegular>
+        <BtnTxRegular onClick={() => changeStep(1)}>
           <AiOutlineArrowLeft style={{ verticalAlign: "middle" }} />
           &nbsp;&nbsp; Go to homepage
         </BtnTxRegular>

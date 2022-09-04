@@ -1,7 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { colorPrimary, colorAccent } from "../../assets/styles/app-theme";
+import { useSelector } from "react-redux";
+import {
+  colorPrimary,
+  colorAccent,
+  colorBGVariant,
+} from "../../assets/styles/app-theme";
 import { TxRegular, TxBold, TxSuccess } from "../../assets/styles/typography";
 
 const Summary = styled.div`
@@ -50,10 +54,10 @@ const Button = styled.button`
   font-size: 1.5em;
   color: white;
   margin-top: 1em;
-  background: ${colorPrimary};
+  background: ${(props) => (props.disabled ? colorBGVariant : colorPrimary)};
   border-radius: 3px;
   display: block;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "unset" : "pointer")}; ;
 `;
 
 const Line = styled.hr`
@@ -95,6 +99,18 @@ function CheckoutSummary() {
     return <Methods title="Payment method" value={payment.name} />;
   };
 
+  const ShipmentFee = () => {
+    if (!shipment.name) return "";
+
+    const { name, fee } = shipment;
+    return (
+      <TxFee>
+        <strong>{name}</strong> shipment
+        <strong style={{ float: "right" }}>{fee}</strong>
+      </TxFee>
+    );
+  };
+
   return (
     <Summary>
       <SummaryTop>
@@ -114,22 +130,19 @@ function CheckoutSummary() {
           Dropshipping fee
           <strong style={{ float: "right" }}>5,900</strong>
         </TxFee>
-        <TxFee>
-          <strong>GO-SEND</strong> shipment
-          <strong style={{ float: "right" }}>15,000</strong>
-        </TxFee>
+        <ShipmentFee />
         <TxTotal>
           Total
           <strong style={{ float: "right" }}>505,900</strong>
         </TxTotal>
 
         {currentStep !== 3 && (
-          <Button>
+          <Button disabled={currentStep === 2 && !payment.name}>
             {currentStep === 1
               ? "Continue to Payment"
               : payment.name
               ? `Pay with ${payment.name}`
-              : "please select payment method"}
+              : "Please select payment method"}
           </Button>
         )}
       </SummaryBottom>

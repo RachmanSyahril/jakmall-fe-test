@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colorPrimary, colorAccent, colorSuccess } from './app-theme'
+import { colorPrimary, colorSuccess } from './app-theme'
 
 export const TxTitle = styled.h1`
   font-size: 32px;

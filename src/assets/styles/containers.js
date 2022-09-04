@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { colorAccent } from "./app-theme";
 
 export const Article = styled.article`
   padding: ${(props) => props.padding || "1rem"};
@@ -13,4 +12,8 @@ export const GridContainer = styled.div`
   gap: ${(props) => props.gap || "0px"};
   padding: ${(props) => props.padding || "1rem"};
   background: white;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 100%;
+  }
 `;

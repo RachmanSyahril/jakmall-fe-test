@@ -63,7 +63,7 @@ function PaymentForm() {
           {shipmentTypes.map((shipment) => (
             <SelectButton
               key={shipment.name}
-              checked={shipment.name == selectedShipment.name}
+              checked={shipment.name === selectedShipment.name}
               onClick={() => setSelectedShipment(shipment)}
             >
               <Grid>
@@ -72,7 +72,7 @@ function PaymentForm() {
                   <TxFee>{shipment.fee}</TxFee>
                 </div>
                 <TxSuccess>
-                  {shipment.name == selectedShipment.name ? <GoCheck /> : ""}
+                  {shipment.name === selectedShipment.name ? <GoCheck /> : ""}
                 </TxSuccess>
               </Grid>
             </SelectButton>
@@ -86,7 +86,7 @@ function PaymentForm() {
           {paymentTypes.map((payment) => (
             <SelectButton
               key={payment.name}
-              checked={payment.name == selectedPayment.name}
+              checked={payment.name === selectedPayment.name}
               onClick={() => setSelectedPayment(payment)}
             >
               <Grid>
@@ -102,7 +102,7 @@ function PaymentForm() {
                   <TxFee>{payment.fee || payment.name}</TxFee>
                 </div>
                 <TxSuccess>
-                  {payment.name == selectedPayment.name ? <GoCheck /> : ""}
+                  {payment.name === selectedPayment.name ? <GoCheck /> : ""}
                 </TxSuccess>
               </Grid>
             </SelectButton>
