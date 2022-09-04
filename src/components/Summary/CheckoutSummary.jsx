@@ -80,8 +80,13 @@ const Methods = ({ title, value }) => {
 
 function CheckoutSummary() {
   const currentStep = useSelector((state) => state.stepReducer.currentStep);
-  const shipment = useSelector((state) => state.shipmentReducer.shipment);
-  const payment = useSelector((state) => state.paymentReducer.payment);
+  const summaryReducer = useSelector((state) => state.summaryReducer);
+  const {
+    payment,
+    shipment,
+    isDropshipper: dropship,
+    totalPayment,
+  } = summaryReducer;
 
   const ShipmentDetail = () => {
     if (!shipment.name) return "";
@@ -97,6 +102,17 @@ function CheckoutSummary() {
   const PaymentDetail = () => {
     if (!payment.name) return "";
     return <Methods title="Payment method" value={payment.name} />;
+  };
+
+  const DropshipFee = () => {
+    if (!dropship) return "";
+
+    return (
+      <TxFee>
+        Dropshipping fee
+        <strong style={{ float: "right" }}>5,900</strong>
+      </TxFee>
+    );
   };
 
   const ShipmentFee = () => {
@@ -126,14 +142,11 @@ function CheckoutSummary() {
           Cost of Goods
           <strong style={{ float: "right" }}>500,000</strong>
         </TxFee>
-        <TxFee>
-          Dropshipping fee
-          <strong style={{ float: "right" }}>5,900</strong>
-        </TxFee>
+        <DropshipFee />
         <ShipmentFee />
         <TxTotal>
           Total
-          <strong style={{ float: "right" }}>505,900</strong>
+          <strong style={{ float: "right" }}>{totalPayment.toLocaleString()}</strong>
         </TxTotal>
 
         {currentStep !== 3 && (

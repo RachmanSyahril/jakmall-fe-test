@@ -1,9 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { GrCheckbox } from "react-icons/gr";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSendAsDropshipper } from "../../redux/actions";
+import { GrCheckbox, GrCheckboxSelected } from "react-icons/gr";
 
-import { TxTitle, BtnTxRegular } from "../../assets/styles/typography";
+import {
+  TxTitle,
+  BtnTxRegular,
+  TxSuccess,
+} from "../../assets/styles/typography";
 import { GridContainer } from "../../assets/styles/containers";
 import { InputBlock, InputAreaBlock } from "../../assets/styles/input";
 
@@ -26,10 +32,18 @@ const BtnDropshipper = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 6px;
-  color: green;
 `;
 
 function DeliveryForm() {
+  const dispatch = useDispatch();
+  const isDropshipper = useSelector(
+    (state) => state.summaryReducer.isDropshipper
+  );
+
+  const toggleDropshipper = () => {
+    dispatch(toggleSendAsDropshipper(!isDropshipper));
+  };
+
   const { register, handleSubmit, error } = useForm();
   const onSubmit = (data) => console.log(data, error);
 
@@ -37,8 +51,11 @@ function DeliveryForm() {
     <Delivery>
       <DeliveryTitle>
         <TxTitle>Delivery Details</TxTitle>
-        <BtnDropshipper>
-          <GrCheckbox />
+
+        <BtnDropshipper onClick={() => toggleDropshipper()}>
+          <TxSuccess>
+            {isDropshipper ? <GrCheckboxSelected /> : <GrCheckbox />}
+          </TxSuccess>
           <BtnTxRegular>Send as dropshipper</BtnTxRegular>
         </BtnDropshipper>
       </DeliveryTitle>

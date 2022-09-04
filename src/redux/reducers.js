@@ -1,5 +1,6 @@
 import {
   CHANGE_CURRENT_STEP,
+  CHANGE_SEND_AS_DROPSHIPPER,
   SELECT_PAYMENT_METHOD,
   SELECT_SHIPMENT_METHOD,
 } from "./constants";
@@ -17,38 +18,43 @@ export const stepReducer = (state = initialStateStep, action = {}) => {
   }
 };
 
-const initialStateShipment = {
-  shipment: {},
-};
+const cleanFee = (fee) => (fee ? parseInt(fee.replace(",", "")) : 0);
 
-export const shipmentReducer = (state = initialStateShipment, action = {}) => {
-  switch (action.type) {
-    case SELECT_SHIPMENT_METHOD:
-      if (action.payload.name === state.shipment.name)
-        return Object.assign({}, state, { shipment: {} });
-      return Object.assign({}, state, { shipment: action.payload });
-    default:
-      return state;
-  }
-};
-
-const initialStatePayment = {
+const initialStateSummary = {
   payment: {},
-  bills: {
-    goods: "500,000",
-    dropship_fee: "",
-    shipment_fee: "",
-    total: "500,000"
-  }
+  shipment: {},
+  isDropshipper: false,
+  totalPayment: 500000,
 };
 
-export const paymentReducer = (state = initialStatePayment, action = {}) => {
+export const summaryReducer = (state = initialStateSummary, action = {}) => {
+  const newState = {};
   switch (action.type) {
     case SELECT_PAYMENT_METHOD:
       if (action.payload.name === state.payment.name)
         return Object.assign({}, state, { payment: {} });
       return Object.assign({}, state, { payment: action.payload });
-    
+    case SELECT_SHIPMENT_METHOD:
+      const { name: currName, fee: currFee } = action.payload;
+      const { name: prevName, fee: prevFee } = state.shipment;
+
+      if (currName === prevName) {
+        newState.shipment = {};
+        newState.totalPayment = state.totalPayment - cleanFee(prevFee);
+      } else {
+        newState.shipment = action.payload;
+        const modFee = cleanFee(currFee) - cleanFee(prevFee);
+        newState.totalPayment = state.totalPayment + modFee;
+      }
+      return Object.assign({}, state, newState);
+    case CHANGE_SEND_AS_DROPSHIPPER:
+      const isDropshipper = action.payload;
+      newState.isDropshipper = isDropshipper;
+
+      if (isDropshipper) newState.totalPayment = state.totalPayment + 5900;
+      else newState.totalPayment = state.totalPayment - 5900;
+
+      return Object.assign({}, state, newState);
     default:
       return state;
   }

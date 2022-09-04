@@ -41,10 +41,9 @@ const paymentTypes = [
 
 function PaymentForm() {
   const dispatch = useDispatch();
-  const selectedShipment = useSelector(
-    (state) => state.shipmentReducer.shipment
-  );
-  const selectedPayment = useSelector((state) => state.paymentReducer.payment);
+  const summaryReducer = useSelector((state) => state.summaryReducer);
+  const { payment: selectedPayment, shipment: selectedShipment } =
+    summaryReducer;
 
   const setSelectedShipment = (shipment) => {
     dispatch(setShipmentMethod(shipment));
