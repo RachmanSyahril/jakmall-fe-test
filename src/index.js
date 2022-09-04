@@ -7,7 +7,7 @@ import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
 import { debounce } from "debounce";
 
-import { stepReducer, shipmentReducer, paymentReducer } from "./redux/reducers";
+import { stepReducer, summaryReducer } from "./redux/reducers";
 import { loadState, saveState } from "./redux/localStorage";
 import App from "./App.jsx";
 import "./assets/App.css";
@@ -15,8 +15,7 @@ import "./assets/App.css";
 const logger = createLogger();
 const rootReducers = combineReducers({
   stepReducer,
-  shipmentReducer,
-  paymentReducer,
+  summaryReducer,
 });
 export const store = configureStore({
   devTools: true,
