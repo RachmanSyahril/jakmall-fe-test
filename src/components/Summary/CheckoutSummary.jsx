@@ -79,26 +79,30 @@ function CheckoutSummary() {
   const shipment = useSelector((state) => state.shipmentReducer.shipment);
   const payment = useSelector((state) => state.paymentReducer.payment);
 
+  const ShipmentDetail = () => {
+    if (!shipment.name) return "";
+
+    return (
+      <Methods
+        title="Delivery estimation"
+        value={`${shipment.estimate} by ${shipment.name}`}
+      />
+    );
+  };
+
+  const PaymentDetail = () => {
+    if (!payment.name) return "";
+    return <Methods title="Payment method" value={payment.name} />;
+  };
+
   return (
     <Summary>
       <SummaryTop>
         <TxBold>Summary</TxBold>
         <TxRegular>10 items purchased</TxRegular>
 
-        {shipment.name ? (
-          <Methods
-            title="Delivery estimation"
-            value={`${shipment.estimate} by ${shipment.name}`}
-          />
-        ) : (
-          ""
-        )}
-
-        {payment.name ? (
-          <Methods title="Payment method" value={payment.name} />
-        ) : (
-          ""
-        )}
+        <ShipmentDetail />
+        <PaymentDetail />
       </SummaryTop>
 
       <SummaryBottom>
@@ -110,11 +114,15 @@ function CheckoutSummary() {
           Dropshipping fee
           <strong style={{ float: "right" }}>5,900</strong>
         </TxFee>
+        <TxFee>
+          <strong>GO-SEND</strong> shipment
+          <strong style={{ float: "right" }}>15,000</strong>
+        </TxFee>
         <TxTotal>
           Total
           <strong style={{ float: "right" }}>505,900</strong>
         </TxTotal>
-        
+
         {currentStep !== 3 && (
           <Button>
             {currentStep === 1

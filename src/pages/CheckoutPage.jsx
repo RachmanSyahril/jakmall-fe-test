@@ -29,29 +29,32 @@ class CheckoutPage extends Component {
       else onChangeStep(step - 1);
     };
 
+    const BackButton = () => {
+      if (currentStep === 3) return "";
+
+      const text = currentStep < 2 ? "Back to cart" : "Back to delivery";
+      return (
+        <BtnTxRegular onClick={() => changeStepScheme(currentStep)}>
+          <AiOutlineArrowLeft style={{ verticalAlign: "middle" }} />
+          &nbsp;&nbsp;
+          {text}
+        </BtnTxRegular>
+      );
+    };
+
+    const CheckoutForm = () => {
+      if (currentStep === 1) return <DeliveryForm />;
+      if (currentStep === 2) return <PaymentForm />;
+      if (currentStep === 3) return <CheckoutFinish />;
+    };
+
     return (
       <Article padding="2rem">
         <CheckoutStepper />
-
-        {currentStep < 3 ? (
-          <BtnTxRegular onClick={() => changeStepScheme(currentStep)}>
-            <AiOutlineArrowLeft style={{ verticalAlign: "middle" }} />
-            &nbsp;&nbsp;
-            {currentStep < 2 ? "Back to cart" : "Back to delivery"}
-          </BtnTxRegular>
-        ) : (
-          ""
-        )}
+        <BackButton />
 
         <GridContainer columnTemplate="70% 30%" gap="14px" padding="2rem 0">
-          {currentStep == 1 ? (
-            <DeliveryForm />
-          ) : currentStep == 2 ? (
-            <PaymentForm />
-          ) : (
-            <CheckoutFinish />
-          )}
-
+          <CheckoutForm />
           <CheckoutSummary />
         </GridContainer>
       </Article>
